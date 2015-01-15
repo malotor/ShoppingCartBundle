@@ -2,3 +2,6 @@ services:
 #    cupon_shopping_cart.example:
 #        class: Cupon\ShoppingCartBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+cupon_shopping_cart.product_repository:
+  class: Cupon\ShoppingCartBundle\Services\Adapters
+  arguments: ["@container"]
