@@ -1,0 +1,3 @@
+cupon_shopping_cart_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: CuponShoppingCartBundle:Default:index }
