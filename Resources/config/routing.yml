@@ -1,3 +1,6 @@
-cupon_shopping_cart_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: CuponShoppingCartBundle:Default:index }
+cupon_shopping_cart_addtocart:
+    path:     /addtocart/{id}
+    defaults: { _controller: CuponShoppingCartBundle:Default:addToCart }
+cupon_shopping_cart_removefromcart:
+    path:     /removefromcart/{id}
+    defaults: { _controller: CuponShoppingCartBundle:Default:removeFromCart }

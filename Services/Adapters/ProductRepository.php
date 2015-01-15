@@ -8,8 +8,9 @@
 
 namespace Cupon\ShoppingCartBundle\Services\Adapters;
 
+use malotor\shoppingcart\Ports\ProducRepositoryInterface;
 
-class ProductRepository {
+class ProductRepository implements ProducRepositoryInterface{
 
   public function __construct(ContainerInterface $container) {
     $this->container = $container;
@@ -19,13 +20,6 @@ class ProductRepository {
   public function get($id) {
     $em = $this->doctrine->getManager();
     $oferta = $em->getRepository('OfertaBundle:Oferta')->get($id);
-
-    $product = ProductFactory::createProduct(
-      $oferta->getName(),
-      $productEntity->getReference(),
-      $productEntity->getDescription(),
-      $productEntity->getPrice()
-    );
-    return $product;
+    return $oferta;
   }
 } 
