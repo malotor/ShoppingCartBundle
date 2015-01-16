@@ -11,17 +11,9 @@ class DefaultController extends Controller
   {
     $ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
     try {
-
       $ecommerce->addProductToCart($id);
-      /*
-      $request = $this->getRequest();
-
-      $this->container->get("session")->setFlash("error", "Pikachu is not allowed");
-      $url = $this->getRequest()->headers->get("referer");
-
-      return new RedirectResponse($url);
-      */
-
+      $cartItems = $ecommerce->getCartItems();
+      var_dump($cartItems);
     } catch (Exception $e) {
 
     }
@@ -31,11 +23,13 @@ class DefaultController extends Controller
     $ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
     try {
       $ecommerce->removeProductFromCart($id);
+      $cartItems = $ecommerce->getCartItems();
+      var_dump($cartItems);
     } catch (Exception $e) {
 
     }
   }
-  public function boxShoppingCart() {
+  public function boxShoppingCart($id) {
     return "<h2>Shopping Cart</h2>";
   }
 }
