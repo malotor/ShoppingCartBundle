@@ -8,18 +8,18 @@
 
 namespace Cupon\ShoppingCartBundle\Services\Adapters;
 
-use malotor\shoppingcart\Ports\ProducRepositoryInterface;
+use malotor\shoppingcart\Ports\ProductRepositoryInterface;
 
-class ProductRepository implements ProducRepositoryInterface{
+class ProductRepository implements ProductRepositoryInterface{
 
-  public function __construct(ContainerInterface $container) {
+  public function __construct($container) {
     $this->container = $container;
     $this->doctrine = $this->container->get('doctrine');
   }
 
   public function get($id) {
     $em = $this->doctrine->getManager();
-    $oferta = $em->getRepository('OfertaBundle:Oferta')->get($id);
+    $oferta = $em->getRepository('OfertaBundle:Oferta')->find($id);
     return $oferta;
   }
 } 
