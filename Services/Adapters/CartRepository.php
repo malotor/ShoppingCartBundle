@@ -9,25 +9,23 @@ use malotor\shoppingcart\domain\Cart;
 
 class CartRepository implements CartRepositoryInterface {
 
+  public function __construct($container) {
+    $this->container = $container;
+    $this->request = $this->container->get('request');
+    $this->session = $this->request->getSession();
+  }
+
   public function get() {
     $cart = new Cart();
-    $session = new Session();
-
-    if ($shoppingCart = $session->get ('shoppingCart')) $cart = unserialize ($shoppingCart);
-
+    if ($shoppingCart = $this->session->get('shoppingCart')) $cart =  $shoppingCart;
     return $cart;
   }
 
   public function save($shoppingCart) {
-
-    $session = new Session();
-    $session->set (
+    $this->session->set (
       'shoppingCart',
-      serialize ($shoppingCart)
+       $shoppingCart
     );
-
-    $session->save ();
-
   }
 
 }

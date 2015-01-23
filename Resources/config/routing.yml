@@ -4,3 +4,6 @@ cupon_shopping_cart_addtocart:
 cupon_shopping_cart_removefromcart:
     path:     /removefromcart/{id}
     defaults: { _controller: ShoppingCartBundle:Default:removeFromCart }
+cupon_shopping_cart_showcart:
+    path:     /showcart
+    defaults: { _controller: ShoppingCartBundle:Default:showCart }

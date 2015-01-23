@@ -1,0 +1,8 @@
+<h2>Shopping Cart</h2>
+<ul>
+    {% for cartItem in cartItems %}
+        <li>{{ cartItem.quantity }}x {{ cartItem.item.nombre }}</li>
+    {% endfor %}
+</ul>
+<p>Total: {{ totalAmount }}</p>
+<a href="{{ path('cupon_shopping_cart_showcart') }}" class="boton">Show Cart</a>

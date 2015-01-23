@@ -4,6 +4,7 @@ services:
     arguments: [@service_container]
   cupon_shopping_cart.cart_repository:
     class: Cupon\ShoppingCartBundle\Services\Adapters\CartRepository
+    arguments: [@service_container]
   cupon_shopping_cart.ecommerce:
     class: malotor\shoppingcart\Application\Ecommerce
     arguments: [@cupon_shopping_cart.product_repository,@cupon_shopping_cart.cart_repository]

@@ -20,6 +20,7 @@ class ProductRepository implements ProductRepositoryInterface{
   public function get($id) {
     $em = $this->doctrine->getManager();
     $oferta = $em->getRepository('OfertaBundle:Oferta')->find($id);
+
     return $oferta;
   }
 } 
