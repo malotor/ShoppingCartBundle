@@ -8,9 +8,9 @@
 
 namespace Cupon\ShoppingCartBundle\Services\Adapters;
 
-use malotor\shoppingcart\Ports\ProductRepositoryInterface;
+use malotor\shoppingcart\Application\ItemRepositoryInterface;
 
-class ProductRepository implements ProductRepositoryInterface{
+class ItemRepository implements ItemRepositoryInterface {
 
   public function __construct($container) {
     $this->container = $container;
