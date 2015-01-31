@@ -4,33 +4,33 @@ namespace Cupon\ShoppingCartBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\Request;
-use Cupon\ShoppingCartBundle\Services\Printer;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-use malotor\shoppingcart\Application\Ecommerce;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DefaultController extends Controller
 {
 
   private $printer;
+  private $router;
+  private $ecommerce;
 
-  public function __construct(ContainerInterface $ecommerce)
+  const MESSAGE_ADD_ITEM = 'Offer added to cart';
+  const MESSAGE_REMOVE_ITEM = 'Offer removed to cart';
+
+  public function __construct(ContainerInterface $container)
   {
+    $this->container = $container;
     $this->ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
     $this->printer = $this->container->get('cupon_shopping_cart.printer');
-    $this->request = $this->container->get('request');
+    $this->router = $this->container->get('cupon_shopping_cart.router');
   }
 
   public function addToCartAction($id)
   {
     try {
       $this->ecommerce->addProductToCart($id);
-      return $this->redirectPreviousPage('Offer added to cart');
+      return $this->router->redirectPreviousPage(self::MESSAGE_ADD_ITEM);
     } catch (Exception $e) {
-      return $this->redirectPreviousPage($e->getMessage(),'error');
+      return $this->router->redirectPreviousPageError($e);
     }
   }
 
@@ -38,36 +38,16 @@ class DefaultController extends Controller
   {
     try {
       $this->ecommerce->removeProductFromCart($id);
-      return $this->redirectPreviousPage('Offer removed to cart');
+      return $this->router->redirectPreviousPage(self::MESSAGE_REMOVE_ITEM);
     } catch (Exception $e) {
-      return $this->redirectPreviousPage($e->getMessage(),'error');
+      return $this->router->redirectPreviousPageError($e);
     }
   }
 
-  public function boxShoppingCart() {
-    return $this->renderShoppingCart('block');
-  }
-
-  public function showCartAction()
-  {
-    return $this->renderShoppingCart('full');
-  }
-
-  protected function renderShoppingCart($display = 'block') {
-
+  public function renderShoppingCart($display = 'block') {
     $this->printer->setShoppingCart($this->ecommerce->getCartItems());
     $this->printer->setTotalAmunt($this->ecommerce->getCartTotalAmunt());
-
     return $this->printer->render($display);
   }
-
-  protected function redirectPreviousPage($message, $type= 'notice') {
-    $this->request->getSession()->getFlashBag()->add($type, $message);
-    return $this->redirect($this->generateUrl('portada'));
-  }
-  /*
-   * $url = $this->getRequest()->headers->get("referer");
-        return new RedirectResponse($url);
-   */
 
 }

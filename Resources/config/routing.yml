@@ -6,4 +6,4 @@ cupon_shopping_cart_removefromcart:
     defaults: { _controller: cupon_shopping_cart.default_controller:removeFromCartAction }
 cupon_shopping_cart_showcart:
     path:     /showcart
-    defaults: { _controller: cupon_shopping_cart.default_controller:showCartAction }
+    defaults: { _controller: cupon_shopping_cart.default_controller:renderShoppingCart, display: full }

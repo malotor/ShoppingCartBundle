@@ -13,4 +13,8 @@ services:
     arguments: [@templating]
   cupon_shopping_cart.default_controller:
     class: Cupon\ShoppingCartBundle\Controller\DefaultController
-    arguments: [@cservice_container]
+    arguments: [@service_container]
+  cupon_shopping_cart.router:
+      class: Cupon\ShoppingCartBundle\Services\Router
+      scope: request
+      arguments: [@request]
