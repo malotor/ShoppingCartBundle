@@ -5,71 +5,69 @@ namespace Cupon\ShoppingCartBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Cupon\ShoppingCartBundle\Services\Printer;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+use malotor\shoppingcart\Application\Ecommerce;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DefaultController extends Controller
 {
 
-  public function addToCartAction($id, Request $request)
-  {
-    $ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
-    try {
-      $ecommerce->addProductToCart($id);
-      $request->getSession()->getFlashBag()->add('notice', 'Offer added to cart');
-      return $this->redirect($this->generateUrl('portada'));
+  private $printer;
 
+  public function __construct(ContainerInterface $ecommerce)
+  {
+    $this->ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
+    $this->printer = $this->container->get('cupon_shopping_cart.printer');
+    $this->request = $this->container->get('request');
+  }
+
+  public function addToCartAction($id)
+  {
+    try {
+      $this->ecommerce->addProductToCart($id);
+      return $this->redirectPreviousPage('Offer added to cart');
     } catch (Exception $e) {
-      $request->getSession()->getFlashBag()->add('error', $e->getMessage());
-      return $this->redirect($this->generateUrl('portada'));
+      return $this->redirectPreviousPage($e->getMessage(),'error');
     }
   }
 
-  public function removeFromCartAction($id, Request $request)
+  public function removeFromCartAction($id)
   {
-    $ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
     try {
-      $ecommerce->removeProductFromCart($id);
-      $request->getSession()->getFlashBag()->add('notice', 'Offer removed to cart');
-      return $this->redirect($this->generateUrl('portada'));
+      $this->ecommerce->removeProductFromCart($id);
+      return $this->redirectPreviousPage('Offer removed to cart');
     } catch (Exception $e) {
-      $request->getSession()->getFlashBag()->add('error', $e->getMessage());
-      return $this->redirect($this->generateUrl('portada'));
+      return $this->redirectPreviousPage($e->getMessage(),'error');
     }
   }
 
-  public function boxShoppingCartAction(Request $request) {
-    try {
-      return $this->renderShoppingCart('block');
-
-    } catch (Exception $e) {
-      $request->getSession()->getFlashBag()->add('error', $e->getMessage());
-      return $this->redirect($this->generateUrl('portada'));
-    }
+  public function boxShoppingCart() {
+    return $this->renderShoppingCart('block');
   }
 
-  public function showCartAction(Request $request)
+  public function showCartAction()
   {
-    try {
-      return $this->renderShoppingCart('full');
-    } catch (Exception $e) {
-      $request->getSession()->getFlashBag()->add('error', $e->getMessage());
-      return $this->redirect($this->generateUrl('portada'));
-    }
+    return $this->renderShoppingCart('full');
   }
 
   protected function renderShoppingCart($display = 'block') {
 
-    $ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
+    $this->printer->setShoppingCart($this->ecommerce->getCartItems());
+    $this->printer->setTotalAmunt($this->ecommerce->getCartTotalAmunt());
 
-    $cartItems = [];
-    foreach($ecommerce->getCartItems() as $delta => $cartLine) {
-      $cartItems[$delta]['item']= $cartLine->getItem();
-      $cartItems[$delta]['quantity']= $cartLine->getQuantity();
-    }
-
-    return $this->render('ShoppingCartBundle:Default:shoppingCart.'. $display.'.html.twig',[
-      'cartItems' => $cartItems,
-      'totalAmount' => $ecommerce->getCartTotalAmunt()
-    ]);
+    return $this->printer->render($display);
   }
+
+  protected function redirectPreviousPage($message, $type= 'notice') {
+    $this->request->getSession()->getFlashBag()->add($type, $message);
+    return $this->redirect($this->generateUrl('portada'));
+  }
+  /*
+   * $url = $this->getRequest()->headers->get("referer");
+        return new RedirectResponse($url);
+   */
 
 }

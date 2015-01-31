@@ -8,3 +8,9 @@ services:
   cupon_shopping_cart.ecommerce:
     class: malotor\shoppingcart\Application\Ecommerce
     arguments: [@cupon_shopping_cart.product_repository,@cupon_shopping_cart.cartline_repository]
+  cupon_shopping_cart.printer:
+    class: Cupon\ShoppingCartBundle\Services\Printer
+    arguments: [@templating]
+  cupon_shopping_cart.default_controller:
+    class: Cupon\ShoppingCartBundle\Controller\DefaultController
+    arguments: [@cservice_container]
