@@ -11,7 +11,7 @@
                 <th>Quantity</th>
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>Tienda</th>
+
                 <th></th>
             </tr>
         </thead>
@@ -19,9 +19,9 @@
             {% for cartItem in cartItems %}
                 <tr>
                     <td>{{ cartItem.quantity }}</td>
-                    <td>{{ cartItem.item.nombre }}</td>
-                    <td>{{ cartItem.item.precio }}</td>
-                    <td>{{ cartItem.item.tienda.nombre }}</td>
+                    <td>{{ cartItem.item.name }}</td>
+                    <td>{{ cartItem.item.price }}</td>
+
                     <td><a href="{{ path('cupon_shopping_cart_removefromcart', {'id': cartItem.item.id }) }}">Remove</a></td>
                 </tr>
             {% endfor %}

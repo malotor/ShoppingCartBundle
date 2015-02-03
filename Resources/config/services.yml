@@ -3,7 +3,7 @@ services:
     class: Cupon\ShoppingCartBundle\Services\Adapters\ItemRepository
     arguments: [@service_container]
   cupon_shopping_cart.cartline_repository:
-      class: Cupon\ShoppingCartBundle\Services\Adapters\LineCartRepository
+      class: Cupon\ShoppingCartBundle\Services\Adapters\StrategyLineCartRepository
       arguments: [@service_container]
   cupon_shopping_cart.ecommerce:
     class: malotor\shoppingcart\Application\Ecommerce

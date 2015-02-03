@@ -9,6 +9,7 @@
 namespace Cupon\ShoppingCartBundle\Services\Adapters;
 
 use malotor\shoppingcart\Application\ItemRepositoryInterface;
+use malotor\shoppingcart\Application\ItemFactory;
 
 class ItemRepository implements ItemRepositoryInterface {
 
@@ -21,6 +22,14 @@ class ItemRepository implements ItemRepositoryInterface {
     $em = $this->doctrine->getManager();
     $oferta = $em->getRepository('OfertaBundle:Oferta')->find($id);
 
-    return $oferta;
+    $item = ItemFactory::create(
+      $oferta->getId(),
+      $oferta->getNombre(),
+      $oferta->getSlug(),
+      $oferta->getDescripcion(),
+      $oferta->getPrecio()
+    );
+
+    return $item;
   }
 } 

@@ -16,14 +16,14 @@ class Router {
     $this->request = $request;
   }
   public function redirectPreviousPage($message) {
-    return $this->doRedirection($message,'notice');
+    return $this->redirect($message,'notice');
   }
 
   public function redirectPreviousPageError(\Exception $exception) {
-    return $this->doRedirection($exception->getMessage(),'error');
+    return $this->redirect($exception->getMessage(),'error');
   }
 
-  protected function doRedirection($message,$type) {
+  protected function redirect($message,$type) {
     $referer = $this->request->headers->get('referer');
     $this->request->getSession()->getFlashBag()->add($type, $message);
     return new RedirectResponse($referer);

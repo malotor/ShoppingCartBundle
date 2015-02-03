@@ -18,12 +18,19 @@ class DefaultController extends Controller
 
   public function __construct(ContainerInterface $container)
   {
+    /*
+     * @todo inject only needed services instead service container
+     */
     $this->container = $container;
     $this->ecommerce = $this->container->get('cupon_shopping_cart.ecommerce');
     $this->printer = $this->container->get('cupon_shopping_cart.printer');
     $this->router = $this->container->get('cupon_shopping_cart.router');
   }
 
+  /*
+   * @todo duplicated code in addToCartAction and removeFromCartAction
+   *
+   */
   public function addToCartAction($id)
   {
     try {
