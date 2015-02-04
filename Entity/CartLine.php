@@ -11,6 +11,10 @@ namespace Cupon\ShoppingCartBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @ORM\Entity(repositoryClass="Cupon\ShoppingCartBundle\Entity\CartLineRepository")
+ */
+
 class CartLine {
 
   /**
